@@ -1,0 +1,12 @@
+.cc-num {
+  padding-left: 36px;
+  background: url(/assets/images/card.png) no-repeat 4px center;
+}
+
+.cc-num.mastercard {
+  background: url(/assets/images/mastercard.png) no-repeat 4px center;
+}
+
+.cc-num.visa {
+  background: url(/assets/images/visa.png) no-repeat 4px center;
+}

@@ -1,0 +1,56 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+
+  <form class="payment-form" id="payment-form">
+    <div class="row">
+    <div class="col-sm-2">
+      <label for="">Amount</label>
+      <p class="input-group">
+        <span class="input-group-addon">$</span>
+        <input type="text" class="form-control" placeholder="Amount" ng-model="amount">
+        <span class="input-group-addon">.00</span>
+      </p>
+    </div><!-- col -->
+
+      <div class="col-sm-6">
+        <label for="">Card number</label>
+        <input type="text" class="input-block-level form-control cc-num" ng-model="number" autocomplete="off" />
+      </div>
+      <div class="col-sm-2">
+        <label for="">Epiration</label>
+
+          <input type="text" class="form-control cc-exp" ng-model="expiry" autocomplete="off" />
+
+      </div>
+      <div class="col-sm-2">
+        <label for="">CVC</label>
+        <input type="text" ng-model="cvc" autocomplete="off" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <textarea class="form-control" ng-model="paymentFor" cols="30" rows="10"></textarea>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <button type="submit" class="btn btn-primary" ng-click="addPayment()">Submit</button>
+        </div>
+      </div><!-- row -->
+  </form>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>History</h3>
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="payment in payments">
+          <button type="button" class="close" ng-click="deletePayment(payment)"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <div class="payment">
+            ${{ payment.amount }}.00 - {{ payment.paymentFor }} <br>
+            <span class="small text-muted">{{ payment.created | date: 'medium' }}</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
