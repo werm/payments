@@ -30,15 +30,40 @@ exports.create = function(req, res) {
     console.log(payment)
     return res.json(201, payment);
   });
-  // stripe.charges.create({
-  //   amount: req.params.amount,
-  //   currency: "usd",
-  //   card: "tok_4auaMYdKVbNILW", // obtained with Stripe.js
-  //   description: "Charge for test@example.com"
-  // }, function(err, charge) {
-
-  // });
 };
+
+exports.charge = function(req, res){
+  // console.log(JSON.stringify(req.body, null, 2));
+  console.log(req.body)
+  var stripeToken = req.body.stripeToken;
+  var amount = req.body.amount;
+
+  stripe.charges.create({
+    amount: amount*100,
+    currency: "usd",
+    card: stripeToken,
+    description: "Charge for test@example.com"
+  }, function(err, charge) {
+    if (err) {
+      console.log("ERR\n")
+      console.log(JSON.stringify(err, null, 2));
+    } else {
+      return res.json(201, {"msg": "Success"})
+    }
+  });
+
+  // var charge = stripe.charges.create({
+  //     amount: amount,
+  //     currency: "usd",
+  //     card: stripeToken,
+  //     description: "payinguser@example.com"
+  // }, function(err, charge) {
+  //     if (err && err.type === 'StripeCardError') {
+  //         console.log(JSON.stringify(err, null, 2));
+  //     }
+  //     res.send("completed payment!")
+  // });
+}
 
 // Updates an existing payment in the DB.
 exports.update = function(req, res) {

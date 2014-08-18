@@ -6,7 +6,11 @@ angular.module('paymentsApp')
       {
         'title': 'Payments',
         'link': '/payment'
-    }
+      },
+      {
+        'title': 'Requests',
+        'link': '/request'
+      }
     ];
 
     $scope.isCollapsed = true;

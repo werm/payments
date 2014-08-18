@@ -10,22 +10,46 @@ angular.module('paymentsApp')
       // socket.syncUpdates('payment', $scope.payments);
     });
 
-    function stripeResponseHandler(status, response) {
-      var $form = $('#payment-form');
+    function getExp(){
+      $(document).on('blur', '.cc-exp', function(){
+        var fullDate = $(this).val().split(' / ');
+        $('#exp-mo').val(fullDate[0]);
+        $('#exp-yr').val(fullDate[1]);
+        console.log($('#exp-mo').val());
+        console.log($('#exp-yr').val());
+      });
+    }
 
-      if (response.error) {
-        // Show the errors on the form
-        $form.find('.payment-errors').text(response.error.message);
-        $form.find('button').prop('disabled', false);
+    Stripe.setPublishableKey('pk_test_v9J7b5KiPBtyF7nqv52ncqN7');
+
+    $scope.handleStripe = function(status, response){
+      var $form = $('form');
+      if(response.error) {
+        console.log(response.error)
+        // there was an error. Fix it.
       } else {
-        // response contains id and card, which contains additional card details
-        var token = response.id;
-        // Insert the token into the form so it gets submitted to the server
-        $form.append($('<input type="hidden" name="stripeToken" />').val(token));
-        // and submit
-        $form.get(0).submit(function(e){
-          e.preventDefault()
-        });
+        // got stripe token, now charge it or smt
+        var token = response.id
+        $http.post('/api/payments/charge', { 
+          amount: $scope.amount,
+          stripeToken: token,
+          paymentFor: $scope.paymentFor,
+          created: new Date()
+        })
+        .success(function(data){
+          if(data.msg === "Success"){
+            $(".payment-errors").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
+                                      '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +
+                                      'Payment Successful!</div>');
+            $form.find('button').prop('disabled', false);
+          } else {
+            // re-enable the submit button
+            $form.find('button').prop('disabled', false);
+            // show the errors on the form
+            $(".payment-errors").html(data.msg);
+          }
+        })
+
       }
     }
 
@@ -34,28 +58,18 @@ angular.module('paymentsApp')
         return;
       }
 
-      console.log($scope.amount)
-      console.log($scope.paymentFor)
-
-      Stripe.card.createToken({
-        number: $scope.number,
-        cvc: $scope.cvc,
-        exp_month: $('.cc-exp').val().split(' / ')[0],
-        exp_year: $('.cc-exp').val().split(' / ')[1]
-      }, stripeResponseHandler);
-
       $http.post('/api/payments', { 
         amount: $scope.amount,
         paymentFor: $scope.paymentFor,
         created: new Date()
       });
-      $scope.amount = '';
-      $scope.paymentFor = '';
     };
 
     $scope.deletePayment = function(payment) {
       $http.delete('/api/payments/' + payment._id);
     };
+
+    getExp();
 
     $(document).on('keyup', '.cc-num', function(){
       console.log($.payment.cardType($(this).val()));

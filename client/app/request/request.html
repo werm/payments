@@ -1,0 +1,33 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-lg-6 col-lg-offset-3">
+    <form role="form">
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <div class="input-group">
+          <span class="input-group-addon">$</span>
+          <input type="text" class="form-control" id="amount" ng-model="amount">
+          <span class="input-group-addon">.00</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="for">For</label>
+        <input type="text" class="form-control" id="for" placeholder="For..." ng-model="requestFor">
+      </div>
+      <button type="submit" class="btn btn-default" ng-click="addRequest()">Submit</button>
+    </form>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-sm-12 col-lg-6 col-lg-offset-3">
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="request in requests">
+          ${{ request.amount }}.00 | {{ request.requestFor }}
+          <a href="/request/{{ request._id }}" class="badge">Pay</a>
+      </li>
+    </div>
+  </div>
+</div>
