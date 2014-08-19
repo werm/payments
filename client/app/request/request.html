@@ -25,8 +25,8 @@
     <div class="col-sm-12 col-lg-6 col-lg-offset-3">
       <ul class="list-group">
         <li class="list-group-item" ng-repeat="request in requests">
-          ${{ request.amount }}.00 | {{ request.requestFor }}
-          <a href="/request/{{ request._id }}" class="badge">Pay</a>
+          ${{ request.amount }} | {{ request.requestFor }}
+          <a href="/payment/{{ request._id }}/{{ request.amount }}" class="badge">Pay</a>
       </li>
     </div>
   </div>

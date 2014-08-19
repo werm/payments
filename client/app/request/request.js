@@ -8,8 +8,8 @@ angular.module('paymentsApp')
         templateUrl: 'app/request/request.html',
         controller: 'RequestCtrl'
       })
-      .state('request.show', {
-        url: '/show/:id',
+      .state('showRequest', {
+        url: '/request/:id',
         templateUrl: 'app/request/show.html',
         controller: 'ShowRequestCtrl'
       });

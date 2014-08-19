@@ -1,1 +1,9 @@
-request
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <div class="row">
+    <h2 class="page-head">{{ request.requestFor }}</h2>
+    <p class="text-muted"><i class="fa fa-clock-o"></i> {{ request.created  | date: 'medium' }}</p>
+    <p class="lead"><i class="fa fa-money"></i> ${{ request.amount }}</p>
+  </div>
+</div>
